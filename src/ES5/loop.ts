@@ -1,3 +1,5 @@
+import { _filter, _map } from "./_";
+
 var users = [
     { id: 1, name: 'ID', age: 36 },
     { id: 2, name: 'BJ', age: 32 },
@@ -53,30 +55,12 @@ var users = [
  * 고차 함수는 함수를 인자로 받거나 함수를 리턴하거나 함수안에서 인자로 받은 함수를 실행하는 함수를 말한다.
  */
 type User = {id: number, name: string, age:number}
-function _filter(list: any[], predi: Function) {
-    var new_list:any[] = [];
-    for(var i = 0; i < list.length; i++) {
-      if(predi(list[i])) {
-          new_list.push(list[i]);
-      }
-    }
-    
-    return new_list;
-}
 
 var over_30 = _filter(users, function(user:User){ return user.age >= 30 })
 console.log(over_30);
 
 var under_30 = _filter(users, function(user:User){ return user.age < 30 })
 console.log(under_30);
-
-function _map(list: any[], mapper: Function) { 
-    var new_list:any[] = [];
-    for(var i = 0; i < list.length; i++) {
-      new_list.push(mapper(list[i]));
-    }
-    return new_list;
-}
 
 
 var names:string[] = _map(over_30, function(user:User){return user.name});
