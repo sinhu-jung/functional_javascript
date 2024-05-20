@@ -79,3 +79,76 @@ console.log(
     _map(
       _filter(users, function(user:User) { return user.age < 30; }),
       function(user:User) { return user.age; }));
+
+// 커링
+/**
+ * currying은 함수와 인자를 다루는 기법이다.
+ * 함수에 인자를 하나 씩 적용하다가 필요한 인자가 모두 채워지면 함수 본체를 실행하는 기법이다.
+ * javascript에서는 커링이 지원이 안 되지만 일급함수가 지원 되고 평가시점을 마음대로 다룰 수 있기 때문에
+ */
+
+
+function _curry(fn:Function) {
+    return function(a: any, b?: any) {
+        return arguments.length == 2 ? 
+        fn(a, b) : function(b: any) { return fn(a, b) };
+    }
+}
+
+function _curryr(fn:Function) {
+    return function(a: any, b?: any) {
+        return arguments.length == 2 ? 
+        fn(a, b) : function(b: any) { return fn(b, a) };
+    }
+}
+
+var add = _curry(function(a:number, b:number) {
+    return a + b;
+})
+
+var add10 = add(10);
+var add5 = add(5);
+
+console.log( add10(5) );
+console.log( add(5)(3) );
+console.log( add5(3) );
+
+var sub = _curryr(function(a:any, b:any) {
+    return a - b;
+});
+console.log( sub(10, 5) );
+
+var sub10 = sub(10);
+console.log( sub10(5) );
+
+// _get을  만들어 좀 더 간단하게 만들기
+/**
+ * get이라는 함수는 오브젝트에 있는 값을 안전하게 참조하는 함수로써 의미를 가진다.
+ */
+var _get = _curryr(function (obj:any, key:string) {
+    return obj == null ? undefined : obj[key];
+})
+
+var user1 = users[0];
+console.log(user1.name);
+console.log(_get(user1, "name"));
+console.log(_get(users[10], "name"));
+
+// 커링을 get에 적용하면 아래와 같이도 사용 가능함
+console.log(_get('name')(user1));
+
+var get_name = _get('name');
+console.log(get_name(user1));
+console.log(get_name(users[2]));
+console.log(get_name(users[4]));
+
+// map과 filter에 커링 적용하기 
+console.log(
+    _map(
+      _filter(users, function(user:User) { return user.age >= 30; }),
+      _get('name')));
+  
+  console.log(
+    _map(
+      _filter(users, function(user:User) { return user.age < 30; }),
+      _get('age')));
