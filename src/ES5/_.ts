@@ -97,6 +97,13 @@ function _each(list:any, iter:Function) {
      * 그래서 내부 값에 대한 다형성은 predi, iter, mapper 와 같은 보조 함수가 책임 지고 있다.
      */
 
+// 커링
+/**
+ * currying은 함수와 인자를 다루는 기법이다.
+ * 함수에 인자를 하나 씩 적용하다가 필요한 인자가 모두 채워지면 함수 본체를 실행하는 기법이다.
+ * javascript에서는 커링이 지원이 안 되지만 일급함수가 지원 되고 평가시점을 마음대로 다룰 수 있기 때문에
+ */
+
     function _curry(fn:Function) {
       return function(a: any, b?: any) {
           return arguments.length == 2 ? 
@@ -136,11 +143,40 @@ function _reduce(list:any, iter:Function, memo?: any) {
   return memo;
 }
 
+// 파이프라인 만들기
+// 1. pipe
+/**
+ * pipe는 함수들을 인자로 받아서 연속적으로 실행 시켜 주는함수를 리턴해주는 함수이다.
+ */
+function _pipe(...fns:any) {
+  return function(arg: any) {
+    return _reduce(fns, function(arg:any, fn:Function){
+      return fn(arg);
+    }, arg)
+  }
+}
+
+// 2. go
+/**
+ * go는 pipe 함수인데 즉시 실행 되는 파이프 함수라고 보면 된다.
+ */
+//@ts-ignore
+function _go(arg, ...args) {
+  return _pipe.apply(null, args)(arg);
+}
+
+var _map2 = _curryr(_map),
+  _filter2 = _curryr(_filter);
+
 export {
     _filter,
     _map,
     _curry,
     _curryr,
     _get,
-    _reduce
+    _reduce,
+    _pipe,
+    _go,
+    _map2,
+    _filter2
 }

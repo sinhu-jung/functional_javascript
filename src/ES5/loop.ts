@@ -1,4 +1,4 @@
-import { _filter, _map, _curry, _curryr, _get, _reduce } from "./_";
+import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _filter2, _map2 } from "./_";
 
 var users = [
     { id: 1, name: 'ID', age: 36 },
@@ -79,16 +79,7 @@ console.log(
     _map(
       _filter(users, function(user:User) { return user.age < 30; }),
       function(user:User) { return user.age; }));
-
-// 커링
-/**
- * currying은 함수와 인자를 다루는 기법이다.
- * 함수에 인자를 하나 씩 적용하다가 필요한 인자가 모두 채워지면 함수 본체를 실행하는 기법이다.
- * javascript에서는 커링이 지원이 안 되지만 일급함수가 지원 되고 평가시점을 마음대로 다룰 수 있기 때문에
- */
-
-
-
+      
 var add = _curry(function(a:number, b:number) {
     return a + b;
 })
@@ -136,3 +127,41 @@ console.log(
 console.log(_reduce([1, 2, 3], function(a: any, b : any){ return a + b}, 0));
 
 console.log(_reduce([1, 2, 3], add));
+
+//pipe
+var f1 = _pipe(
+  function(a:number) { return a + 1; },
+  function(a:number) { return a * 2; },
+  function(a:number) { return a * a; });
+
+console.log(f1(1));
+
+_go(
+  1,
+  function(a:number) { return a + 1; },
+  function(a:number) { return a * 2; },
+  function(a:number) { return a * a; },
+console.log);
+
+// users에 _go 적용
+console.log(
+  _map(
+    _filter(users, function(user:User) { return user.age >= 30; }),
+    _get('name')));
+
+console.log(
+  _map(
+    _filter(users, function(user:User) { return user.age < 30; }),
+    _get('age')));
+
+_go(users,
+    _filter2(function(user:User) { return user.age >= 30; }),
+    _map2(_get("name")),
+    console.log
+  );
+
+_go(users,
+    _filter2((user:User) => user.age >= 30),
+    _map2(_get("age")),
+    console.log
+  );
