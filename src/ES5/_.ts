@@ -96,8 +96,51 @@ function _each(list:any, iter:Function) {
      * 안에서 뭔가 수행 할 수 있도록 하는 것은 보조 함수의 역할이다.
      * 그래서 내부 값에 대한 다형성은 predi, iter, mapper 와 같은 보조 함수가 책임 지고 있다.
      */
-      
+
+    function _curry(fn:Function) {
+      return function(a: any, b?: any) {
+          return arguments.length == 2 ? 
+          fn(a, b) : function(b: any) { return fn(a, b) };
+      }
+  }
+  
+  function _curryr(fn:Function) {
+      return function(a: any, b?: any) {
+          return arguments.length == 2 ? 
+          fn(a, b) : function(b: any) { return fn(b, a) };
+      }
+  }
+
+  // _get을  만들어 좀 더 간단하게 만들기
+  /**
+   * get이라는 함수는 오브젝트에 있는 값을 안전하게 참조하는 함수로써 의미를 가진다.
+   */
+  var _get = _curryr(function (obj:any, key:string) {
+    return obj == null ? undefined : obj[key];
+  })
+
+  // _reduce 만들기
+var slice = Array.prototype.slice;
+function _rest(list:any, num?: number) {
+  return slice.call(list, num || 1);
+}
+
+function _reduce(list:any, iter:Function, memo?: any) {
+  if(arguments.length === 2) {
+    memo = list[0];
+    list = _rest(list);
+  }
+  _each(list, function(val:any) {
+    memo = iter(memo, val);
+  })
+  return memo;
+}
+
 export {
     _filter,
-    _map
+    _map,
+    _curry,
+    _curryr,
+    _get,
+    _reduce
 }

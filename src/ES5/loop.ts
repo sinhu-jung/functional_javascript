@@ -1,4 +1,4 @@
-import { _filter, _map } from "./_";
+import { _filter, _map, _curry, _curryr, _get, _reduce } from "./_";
 
 var users = [
     { id: 1, name: 'ID', age: 36 },
@@ -88,19 +88,6 @@ console.log(
  */
 
 
-function _curry(fn:Function) {
-    return function(a: any, b?: any) {
-        return arguments.length == 2 ? 
-        fn(a, b) : function(b: any) { return fn(a, b) };
-    }
-}
-
-function _curryr(fn:Function) {
-    return function(a: any, b?: any) {
-        return arguments.length == 2 ? 
-        fn(a, b) : function(b: any) { return fn(b, a) };
-    }
-}
 
 var add = _curry(function(a:number, b:number) {
     return a + b;
@@ -120,14 +107,6 @@ console.log( sub(10, 5) );
 
 var sub10 = sub(10);
 console.log( sub10(5) );
-
-// _get을  만들어 좀 더 간단하게 만들기
-/**
- * get이라는 함수는 오브젝트에 있는 값을 안전하게 참조하는 함수로써 의미를 가진다.
- */
-var _get = _curryr(function (obj:any, key:string) {
-    return obj == null ? undefined : obj[key];
-})
 
 var user1 = users[0];
 console.log(user1.name);
@@ -152,3 +131,8 @@ console.log(
     _map(
       _filter(users, function(user:User) { return user.age < 30; }),
       _get('age')));
+
+//reduce
+console.log(_reduce([1, 2, 3], function(a: any, b : any){ return a + b}, 0));
+
+console.log(_reduce([1, 2, 3], add));
