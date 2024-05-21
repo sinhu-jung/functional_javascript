@@ -14,10 +14,31 @@ function _filter(list: any, predi: Function) {
     return new_list;
 }
 
+  // _get을  만들어 좀 더 간단하게 만들기
+  /**
+   * get이라는 함수는 오브젝트에 있는 값을 안전하게 참조하는 함수로써 의미를 가진다.
+   */
+  var _get = _curryr(function (obj:any, key:string) {
+    return obj == null ? undefined : obj[key];
+  })
+
+  // _keys 만들기
+function _is_object(obj:any) {
+  return typeof obj === "object" && !!obj;
+}
+
+function _keys(obj:any) {
+  return _is_object(obj) ? Object.keys(obj) : [];
+}
+
+var _length = _get('length');
+
 // each 함수를 이용하여 filter와 map에 있는 중복된 반복문을 함수로 만들어 사용
 function _each(list:any, iter:Function) {
-    for(var i = 0; i < list.length; i++) {
-        iter(list[i]);
+  var keys = _keys(list);
+
+    for(var i = 0 ,len = keys.length; i < len; i++) {
+        iter(list[keys[i]]);
     }
 
     return list;
@@ -118,14 +139,6 @@ function _each(list:any, iter:Function) {
       }
   }
 
-  // _get을  만들어 좀 더 간단하게 만들기
-  /**
-   * get이라는 함수는 오브젝트에 있는 값을 안전하게 참조하는 함수로써 의미를 가진다.
-   */
-  var _get = _curryr(function (obj:any, key:string) {
-    return obj == null ? undefined : obj[key];
-  })
-
   // _reduce 만들기
 var slice = Array.prototype.slice;
 function _rest(list:any, num?: number) {
@@ -168,6 +181,7 @@ function _go(arg, ...args) {
 var _map2 = _curryr(_map),
   _filter2 = _curryr(_filter);
 
+
 export {
     _filter,
     _map,
@@ -178,5 +192,7 @@ export {
     _pipe,
     _go,
     _map2,
-    _filter2
+    _filter2,
+    _each,
+    _keys
 }

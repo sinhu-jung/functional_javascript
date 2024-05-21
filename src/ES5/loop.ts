@@ -1,5 +1,6 @@
-import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _filter2, _map2 } from "./_";
+import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _filter2, _map2, _each, _keys } from "./_";
 
+type User = {id: number, name: string, age:number}
 var users = [
     { id: 1, name: 'ID', age: 36 },
     { id: 2, name: 'BJ', age: 32 },
@@ -54,7 +55,6 @@ var users = [
  * 또한 filter와 map 같은 함수를 고차 함수라고도 한다.
  * 고차 함수는 함수를 인자로 받거나 함수를 리턴하거나 함수안에서 인자로 받은 함수를 실행하는 함수를 말한다.
  */
-type User = {id: number, name: string, age:number}
 
 var over_30 = _filter(users, function(user:User){ return user.age >= 30 })
 console.log(over_30);
@@ -165,3 +165,31 @@ _go(users,
     _map2(_get("age")),
     console.log
   );
+
+// _each에 null이 들어가도 에러 안나게 처리
+_each(null, console.log);
+console.log(_map(null, function(v:any){ return v; }));
+console.log(_filter(null, function(v:any){ return v; }));
+
+_go(null,
+  _filter2(function(v:any){return v % 2}),
+  _map2(function(v:any){return v * v}),
+  console.log
+)
+
+// _keys
+console.log(_keys({name: "ID", age : 33}));
+console.log(_keys([1, 2, 3, 4]));
+console.log(_keys(10));
+console.log(_keys(null));
+
+// _each 외부 다형성 높이기
+
+_each({
+  13 : 'ID',
+  19 : 'HD',
+  29 : 'YD'
+}, function(name: string) {
+  console.log(name);
+})
+
