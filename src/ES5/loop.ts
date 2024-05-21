@@ -1,4 +1,4 @@
-import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _filter2, _map2, _each, _keys } from "./_";
+import { _filter, _map, _curry, _curryr, _get, _reduce, _pipe, _go, _each, _keys } from "./_";
 
 type User = {id: number, name: string, age:number}
 var users = [
@@ -155,14 +155,14 @@ console.log(
     _get('age')));
 
 _go(users,
-    _filter2(function(user:User) { return user.age >= 30; }),
-    _map2(_get("name")),
+    _filter(function(user:User) { return user.age >= 30; }),
+    _map(_get("name")),
     console.log
   );
 
 _go(users,
-    _filter2((user:User) => user.age >= 30),
-    _map2(_get("age")),
+    _filter((user:User) => user.age >= 30),
+    _map(_get("age")),
     console.log
   );
 
@@ -172,8 +172,8 @@ console.log(_map(null, function(v:any){ return v; }));
 console.log(_filter(null, function(v:any){ return v; }));
 
 _go(null,
-  _filter2(function(v:any){return v % 2}),
-  _map2(function(v:any){return v * v}),
+  _filter(function(v:any){return v % 2}),
+  _map(function(v:any){return v * v}),
   console.log
 )
 

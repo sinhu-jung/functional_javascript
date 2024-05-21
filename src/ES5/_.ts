@@ -1,18 +1,20 @@
-function _map(list: any, mapper: Function) { 
+//@ts-nocheck
+
+var _map = _curryr(function _map(list: any, mapper: Function) { 
     var new_list:any[] = [];
     _each(list, function(val:any){
         new_list.push(mapper(val));
     })
     return new_list;
-}
+})
 
-function _filter(list: any, predi: Function) {
+var filter = _curryr(function _filter(list: any, predi: Function) {
     var new_list:any[] = [];
     _each(list, function(val:any) {
         if(predi(val)) new_list.push(val);
     })
     return new_list;
-}
+})
 
   // _get을  만들어 좀 더 간단하게 만들기
   /**
@@ -53,22 +55,22 @@ function _each(list:any, iter:Function) {
      * 메서드는 객체 지향 프로그래밍이다.
      * 메서드는 해당 클래스에 정의 되기 때문에 해당 클래스의 인스턴스에만 사용할 수 있다는 특징을 가지고 있다.
      */
-    console.log(
-        [1, 2, 3, 4].map(function(val) {
-          return val * 2;
-        })
-      );
+    // console.log(
+    //     [1, 2, 3, 4].map(function(val) {
+    //       return val * 2;
+    //     })
+    //   );
       
-      console.log(
-        [1, 2, 3, 4].filter(function(val) {
-          return val % 2;
-        })
-      );
+    //   console.log(
+    //     [1, 2, 3, 4].filter(function(val) {
+    //       return val % 2;
+    //     })
+    //   );
 
     // document.querySelectorAll('*'); 해당 명령문을 출력 해보면 배열 형식으로 나오는데 
     // 이것은 배열이 아니라 array_like 객체이다.
     // 왜냐하면 이것이 배열이라면 map 이라는 함수가 안에 있어야 하지만 없다.
-    console.log(document.querySelectorAll('*'));
+    // console.log(document.querySelectorAll('*'));
     
     /**
      * 아래와 같이 실행을 해보면 에러가 발생한다.
@@ -92,11 +94,11 @@ function _each(list:any, iter:Function) {
      * 평가 자체가 매우 유연해 진다.
      * 이것을 이용하여 더 높은 조합성을 적용할 수 있다.
      */
-    console.log(
-        _map(document.querySelectorAll('*'), function(node:Element) {
-          return node.nodeName;
-        })
-    );
+    // console.log(
+    //     _map(document.querySelectorAll('*'), function(node:Element) {
+    //       return node.nodeName;
+    //     })
+    // );
 
   // 내부 다형성
     // 1. predi, iter, mapper
@@ -173,14 +175,21 @@ function _pipe(...fns:any) {
 /**
  * go는 pipe 함수인데 즉시 실행 되는 파이프 함수라고 보면 된다.
  */
-//@ts-ignore
 function _go(arg, ...args) {
   return _pipe.apply(null, args)(arg);
 }
 
-var _map2 = _curryr(_map),
-  _filter2 = _curryr(_filter);
+// values
+function _identity(val:any) {
+  return val;
+}
 
+var _values = _map(_identity);
+
+// pluck
+function _pluck(data, key) {
+  return _map(data, _get(key))
+}
 
 export {
     _filter,
@@ -191,8 +200,8 @@ export {
     _reduce,
     _pipe,
     _go,
-    _map2,
-    _filter2,
     _each,
-    _keys
+    _keys,
+    _values,
+    _pluck,
 }
