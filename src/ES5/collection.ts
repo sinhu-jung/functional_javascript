@@ -1,4 +1,4 @@
-import { _map, _keys, _values, _pluck } from "./_";
+import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find} from "./_";
 
 // 컬렉션 중심 프로그래밍
 /**
@@ -36,3 +36,29 @@ console.log(_values(users[0]));
 
 //  2. pluck
 console.log(_pluck(users, 'age'));
+
+// 2. 거르기
+//   1. reject - filter와는 반대로 true로 평가 되는 것을 제외 시키는 역할
+console.log(
+    _filter(users, function(user) {
+        return user.age > 30;
+    })
+);
+
+console.log(
+    _reject(users, function(user) {
+        return user.age > 30;
+    })
+);
+
+//   2. compact - truedy 한 값만 남기는 함수
+// 0과 false, null 은 사라지고 1, 2, {}만 남기는 함수 
+console.log(_compact([1, 2, 0, false, null ,{}]));
+
+// 3. 찾아내기
+//   1. find
+console.log(
+    _find(users, function(user) {
+        return user.age < 30;
+    })
+);

@@ -8,7 +8,7 @@ var _map = _curryr(function _map(list: any, mapper: Function) {
     return new_list;
 })
 
-var filter = _curryr(function _filter(list: any, predi: Function) {
+var _filter = _curryr(function _filter(list: any, predi: Function) {
     var new_list:any[] = [];
     _each(list, function(val:any) {
         if(predi(val)) new_list.push(val);
@@ -191,6 +191,30 @@ function _pluck(data, key) {
   return _map(data, _get(key))
 }
 
+// reject
+function _reject(data, predi) {
+  return _filter(data, _negate(predi))
+}
+
+function _negate(func) {
+  return function(val) {
+    return !func(val);
+  }
+}
+
+var _compact = _filter(_identity)
+
+function _find(list:any, predi:Function) {
+  var keys = _keys(list);
+
+    for(var i = 0 ,len = keys.length; i < len; i++) {
+        var val = list[keys[i]];
+         if(predi(val)) return val;
+    }
+
+    return list;
+}
+
 export {
     _filter,
     _map,
@@ -204,4 +228,7 @@ export {
     _keys,
     _values,
     _pluck,
+    _reject,
+    _compact,
+    _find
 }
