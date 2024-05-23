@@ -1,4 +1,4 @@
-import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find} from "./_";
+import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find, _find_index, _some, _every } from "./_";
 
 // 컬렉션 중심 프로그래밍
 /**
@@ -62,3 +62,20 @@ console.log(
         return user.age < 30;
     })
 );
+
+//   2. find_index
+console.log(
+    _find_index(users, function(user) {
+        return user.age < 30;
+    })
+);
+
+//   3. some
+console.log(_some([1, 2, 5, 10 , 20], function(val) {
+    return val > 10;
+}));
+
+//   4. every
+console.log(_every([111, 222, 5, 10 , 20], function(val) {
+    return val > 3;
+}));

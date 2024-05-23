@@ -204,15 +204,29 @@ function _negate(func) {
 
 var _compact = _filter(_identity)
 
-function _find(list:any, predi:Function) {
+var _find = _curryr(function (list:any, predi:Function) {
   var keys = _keys(list);
 
     for(var i = 0 ,len = keys.length; i < len; i++) {
         var val = list[keys[i]];
          if(predi(val)) return val;
     }
+});
 
-    return list;
+var _find_index = _curryr(function (list:any, predi:Function) {
+  var keys = _keys(list);
+
+    for(var i = 0 ,len = keys.length; i < len; i++) {
+         if(predi(list[keys[i]])) return i;
+    }
+});
+
+function _some(data, predi) {
+  return _find_index(data, predi || _identity) != -1;
+}
+
+function _every(data, predi) {
+  return _find_index(data, _negate(predi || _identity)) == -1;
 }
 
 export {
@@ -230,5 +244,8 @@ export {
     _pluck,
     _reject,
     _compact,
-    _find
+    _find,
+    _find_index,
+    _some,
+    _every
 }
