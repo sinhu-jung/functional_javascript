@@ -229,6 +229,31 @@ function _every(data, predi) {
   return _find_index(data, _negate(predi || _identity)) == -1;
 }
 
+export function _min(data) {
+  return _reduce(data, function(a, b) {
+    return a < b ? a : b;
+  });
+}
+
+export function _max(data) {
+  return _reduce(data, function(a, b) {
+    return a > b ? a : b;
+  });
+}
+
+export var _min_by = _curryr(function (data, iter) {
+  return _reduce(data, function(a, b) {
+    return iter(a) < iter(b) ? a : b;
+  });
+})
+
+export var _max_by = _curryr(function (data, iter) {
+  return _reduce(data, function(a, b) {
+    return iter(a) > iter(b) ? a : b;
+  });
+});
+
+
 export {
     _filter,
     _map,

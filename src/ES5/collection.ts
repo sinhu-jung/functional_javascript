@@ -1,4 +1,5 @@
 import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find, _find_index, _some, _every } from "./_";
+import { _min, _max, _min_by, _max_by, _go, _get } from "./_";
 
 // 컬렉션 중심 프로그래밍
 /**
@@ -79,3 +80,30 @@ console.log(_some([1, 2, 5, 10 , 20], function(val) {
 console.log(_every([111, 222, 5, 10 , 20], function(val) {
     return val > 3;
 }));
+
+
+// 4. 접기
+//   1. min, max, min_by, max_by
+console.log(_min([1, 2, 4, 10, 5, -4]));
+console.log(_max([1, 2, 4, 10, 5, -4]));
+
+console.log(_min_by([1, 2, 4, 10, 5, -4], Math.abs));
+console.log(_max_by([1, 2, 4, 10, 5, -4, -11], Math.abs));
+
+console.log(
+    _max_by(users, function(user){
+        return user.age;
+    })
+);
+
+_go(
+    users,
+    _filter(user => user.age >= 30),
+    _min_by(_get('age')),
+    _get('name'),
+    console.log
+)
+
+
+//   2. group_by, push
+//   3. count_by, inc
