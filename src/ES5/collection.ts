@@ -1,5 +1,5 @@
 import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find, _find_index, _some, _every } from "./_";
-import { _min, _max, _min_by, _max_by, _go, _get, _group_by, _count_by } from "./_";
+import { _min, _max, _min_by, _max_by, _go, _get, _group_by, _count_by, _pairs } from "./_";
 
 // 컬렉션 중심 프로그래밍
 /**
@@ -138,4 +138,17 @@ console.log(
     console.log
 );
 
- 
+ // each 개선하기 
+ console.log(_pairs(users[0]));
+ console.clear();
+
+ _go(
+    users,
+    _count_by(user => user.age - user.age % 10),
+    _map((count, key) => `<li>${key}대는 ${count}명 입니다.</li>`),
+    list => '<ul>' + list.join('') + '</ul>',
+    function(html) {
+        var doc = document.getElementById('app');
+        doc.innerHTML = html;
+    }
+ );

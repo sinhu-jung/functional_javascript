@@ -1,14 +1,14 @@
 //@ts-nocheck
 
-var _map = _curryr(function _map(list: any, mapper: Function) { 
+var _map = _curryr(function (list: any, mapper: Function) { 
     var new_list:any[] = [];
-    _each(list, function(val:any){
-        new_list.push(mapper(val));
+    _each(list, function(val:any, key){
+        new_list.push(mapper(val, key));
     })
     return new_list;
 })
 
-var _filter = _curryr(function _filter(list: any, predi: Function) {
+var _filter = _curryr(function (list: any, predi: Function) {
     var new_list:any[] = [];
     _each(list, function(val:any) {
         if(predi(val)) new_list.push(val);
@@ -40,7 +40,7 @@ function _each(list:any, iter:Function) {
   var keys = _keys(list);
 
     for(var i = 0 ,len = keys.length; i < len; i++) {
-        iter(list[keys[i]]);
+        iter(list[keys[i]], keys[i]);
     }
 
     return list;
@@ -274,6 +274,8 @@ export var _count_by = _curryr(function(data, iter) {
     return _inc(count, iter(val))
   }, {})
 })
+
+export var _pairs = _map((val, key) => [key, val]);
 
 export {
     _filter,
