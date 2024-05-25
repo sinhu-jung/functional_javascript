@@ -1,5 +1,5 @@
 import { _map, _filter, _compact,_reject ,_keys, _values, _pluck, _find, _find_index, _some, _every } from "./_";
-import { _min, _max, _min_by, _max_by, _go, _get } from "./_";
+import { _min, _max, _min_by, _max_by, _go, _get, _group_by, _count_by } from "./_";
 
 // 컬렉션 중심 프로그래밍
 /**
@@ -106,4 +106,36 @@ _go(
 
 
 //   2. group_by, push
+_go(
+    users,
+    _group_by(user => user.age),
+    console.log
+);
+
+_go(
+    users,
+    _group_by(user => user.age - user.age % 10),
+    console.log
+)
+
+_go(
+    users,
+    _group_by(user => user.name[0]),
+    console.log
+)
+
 //   3. count_by, inc
+console.log(
+ _count_by(users, user => user.age));
+
+ console.log(
+    _count_by(users, user => user.age - user.age % 10)
+ );
+
+ _go(
+    users,
+    _count_by(user => user.name[0]),
+    console.log
+);
+
+ 

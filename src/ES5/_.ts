@@ -253,6 +253,27 @@ export var _max_by = _curryr(function (data, iter) {
   });
 });
 
+function _push(obj, key, val) {
+  (obj[key] = obj[key] || []).push(val);
+  return obj
+}
+
+export var _group_by = _curryr(function(data, iter) {
+  return _reduce(data, function(grouped, val) {
+    return _push(grouped, iter(val), val);
+  }, {})
+})
+
+var _inc = function (count, key) {
+  count[key] ? count[key]++ : count[key] = 1;
+  return count;
+}
+
+export var _count_by = _curryr(function(data, iter) {
+  return _reduce(data, function(count, val) {
+    return _inc(count, iter(val))
+  }, {})
+})
 
 export {
     _filter,
